@@ -12,7 +12,8 @@
     isOptionOrFlag  = function (item) {
       return item.length > 0 && item[0] === '-';
     },
-    optionsAndFlags = _.filter(args, isOptionOrFlag);
+    optionsAndFlags = _.filter(args, isOptionOrFlag),
+    styles = [];
 
   // parse arguments {{{
 
@@ -38,8 +39,11 @@
         },
         addStyle = function (interval) {
           return function (page) {
-            interval.style = page.evaluate(function () {
-              return CSS.simplerStyle();
+            styles.push({
+              properties: page.evaluate(function () {
+                return CSS.simplerStyle();
+              }),
+              interval: interval
             });
             toGo -= 1;
             if (toGo < 1) {
